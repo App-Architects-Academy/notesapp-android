@@ -1,17 +1,14 @@
 package academy.apparchitects.notesapp.presentation.noteslist
 
 import academy.apparchitects.notesapp.model.Note
-import academy.apparchitects.notesapp.repository.NoteRepositoryImpl
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import javax.inject.Inject
 
 var count = 0
 class NotesListVM(): ViewModel() {

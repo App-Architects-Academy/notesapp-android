@@ -4,8 +4,6 @@ import academy.apparchitects.notesapp.presentation.noteslist.NotesListVM
 import academy.apparchitects.notesapp.ui.screens.NotesDetailScreen
 import academy.apparchitects.notesapp.ui.screens.NotesListScreen
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType

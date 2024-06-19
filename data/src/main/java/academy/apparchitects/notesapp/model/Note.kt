@@ -2,7 +2,6 @@ package academy.apparchitects.notesapp.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.Date
 
 @Entity(tableName = "notes")
 data class Note(
