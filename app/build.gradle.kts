@@ -4,6 +4,8 @@ plugins {
     alias(libs.plugins.compose.compiler)
     id("androidx.navigation.safeargs.kotlin")
     kotlin("plugin.serialization").version("1.9.0")
+    alias(libs.plugins.hilt.android.gradle.plugin)
+    kotlin("kapt")
 }
 
 android {
@@ -64,6 +66,8 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -73,4 +77,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.jetpack.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.kotlinx.datetime)
+    implementation(libs.android.timber)
 }
+apply(plugin = "dagger.hilt.android.plugin")
