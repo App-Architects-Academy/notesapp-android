@@ -1,26 +1,30 @@
 package academy.apparchitects.notesapp.presentation.noteslist
 
-import academy.apparchitects.notesapp.data.Note
-import academy.apparchitects.notesapp.presentation.base.BaseViewModel
+import academy.apparchitects.notesapp.model.Note
+import academy.apparchitects.notesapp.repository.NoteRepositoryImpl
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
-import java.util.UUID
+import timber.log.Timber
+import javax.inject.Inject
 
-class NotesListVM : BaseViewModel<NotesListStates>() {
-    private val _state: MutableStateFlow<NotesListStates> = MutableStateFlow(NotesListStates.Idle)
+var count = 0
+class NotesListVM(): ViewModel() {
 
-    override val state: StateFlow<NotesListStates> = _state
+    private val _state: MutableStateFlow<NotesListStates<List<Note>>> = MutableStateFlow(NotesListStates.Loading)
+    val state: StateFlow<NotesListStates<List<Note>>> = _state
 
     init {
+        Timber.d("fetch notes called ${count++}")
         fetchNotes()
     }
 
-    private fun fetchNotes() {
+    fun fetchNotes() {
         _state.value =
             NotesListStates.Loading
 
@@ -29,18 +33,16 @@ class NotesListVM : BaseViewModel<NotesListStates>() {
             try {
                 val notesList = (1..10).toList().map {
                     Note(
-                        id = UUID.randomUUID(),
-                        title = "Note $it",
-                        note = "Some note $it",
-                        createdOn = Clock.System.now()
+                        title = "Room DB",
+                        note = "SQLite Wrapper",
+                        createdOn = System.currentTimeMillis()
                     )
                 }
                 val favNotes = (1..3).toList().map {
                     Note(
-                        id = UUID.randomUUID(),
-                        title = "Fav Note $it",
-                        note = "Some note $it",
-                        createdOn = Clock.System.now()
+                        title = "Jetpack Compose",
+                        note = "Declarative and Unidirectional approach to android",
+                        createdOn = System.currentTimeMillis()
                     )
                 }
                 _state.value =
@@ -51,15 +53,12 @@ class NotesListVM : BaseViewModel<NotesListStates>() {
             } catch (t: Throwable) {
                 _state.value = NotesListStates.Error(t.message ?: "Not yet implemented")
             }
-
         }
     }
 
     fun getNoteById(noteId: String): Note? {
         val currentState = _state.value
         if (currentState is NotesListStates.Success) {
-            println("Current favNotes: ${currentState.favNotes.map { it.id }}")
-            println("Current otherNotes: ${currentState.otherNotes.map { it.id }}")
             val favNote = currentState.favNotes.find { it.id.toString() == noteId }
             val otherNote = currentState.otherNotes.find { it.id.toString() == noteId }
             println("Finding Note ID: $noteId")

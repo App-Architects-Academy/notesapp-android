@@ -36,10 +36,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NotesDetailScreen(
-    notesListVM: NotesListVM = viewModel(),
     noteId: String,
     onBack: () -> Unit
 ) {
+    val notesListVM: NotesListVM = viewModel(NotesListVM::class.java)
     val state by notesListVM.state.collectAsStateWithLifecycle()
 
     Scaffold(

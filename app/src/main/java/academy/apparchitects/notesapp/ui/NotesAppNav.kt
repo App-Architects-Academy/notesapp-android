@@ -1,8 +1,12 @@
 package academy.apparchitects.notesapp.ui
 
+import academy.apparchitects.notesapp.presentation.noteslist.NotesListVM
 import academy.apparchitects.notesapp.ui.screens.NotesDetailScreen
 import academy.apparchitects.notesapp.ui.screens.NotesListScreen
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -14,14 +18,20 @@ import kotlinx.serialization.Serializable
 @Composable
 fun NotesAppNav(
     navController: NavHostController,
-    startDestination: Destinations = Destinations.NotesList
+    startDestination: Destinations = Destinations.NotesList,
+    viewModel: NotesListVM = viewModel()
 ) {
     NavHost(navController = navController, startDestination = startDestination.toString()) {
         composable(Destinations.NotesList.toString()) {
-            NotesListScreen(onNoteClick = {
-                println("Navigated to NoteDetail with ID 1: $it")
-                navController.navigate(Destinations.NoteDetail(it).toString())
-            })
+            NotesListScreen(
+                viewModel,
+                onNoteClick = {
+                    println("Navigated to NoteDetail with ID 1: $it")
+                    navController.navigate(Destinations.NoteDetail(it).toString())
+                },
+                onBookMarkChange = {},
+                onDeleteClick = {},
+            )
         }
 
         composable(
